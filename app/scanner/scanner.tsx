@@ -35,13 +35,7 @@ const Scanner = () => {
           >
             <View style={styles.scanBoxContainer}>
               <View
-                style={{
-                  borderStyle: "dashed",
-                  borderWidth: 1,
-                  borderColor: "white",
-                  width: 200,
-                  height: 200,
-                }}
+                style={styles.scanBox}
               ></View>
             </View>
           </CameraView>
@@ -74,11 +68,11 @@ const styles = StyleSheet.create({
     zIndex: 0,
   },
   scanBox: {
-    width: 200,
-    height: 200,
+    borderStyle: "dashed",
     borderWidth: 1,
     borderColor: "white",
-    borderCurve: "circular",
+    width: 200,
+    height: 200,
   },
 });
 
