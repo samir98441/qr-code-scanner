@@ -50,6 +50,22 @@
     },
     "updates": {
       "url": "https://u.expo.dev/09214221-8c26-497c-8e06-eee5f6f38d05"
+    },
+    "packagerOpts": {
+      "config": "metro.config.js",
+      "sourceExts": [
+        "expo.ts",
+        "expo.tsx",
+        "expo.js",
+        "expo.jsx",
+        "ts",
+        "tsx",
+        "js",
+        "jsx",
+        "json",
+        "wasm",
+        "svg"
+      ]
     }
   }
 }

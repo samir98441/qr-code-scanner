@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Button, StyleSheet, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { CameraView } from "expo-camera/next";
 import { Camera } from "expo-camera";
+import { SCANNING } from "../../assets";
 
 const Scanner = () => {
   const [hasCameraPermission, setHasCameraPermission] = useState(false);
-  const [scanned, setScanned] = useState(true);
-  const [isCameraOpen, setIsCameraOpen] = useState(false);
-
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
@@ -16,39 +14,25 @@ const Scanner = () => {
   }, []);
 
   const handleBarCodeScanned = (res: any) => {
-    setScanned(true);
     alert(res.data);
   };
 
   return (
     <View style={styles.container}>
-      {!isCameraOpen && (
-        <Button title="OpenCamera" onPress={() => setIsCameraOpen(true)} />
-      )}
+      <Text style={{ fontSize: 25 }}>Welcome to QR Scanner</Text>
 
-      {hasCameraPermission && isCameraOpen && (
-        <>
-          <CameraView
-            style={{ height: 400, width: 300 }}
-            barcodeScannerSettings={{ barcodeTypes: ["qr"] }}
-            onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
-          >
-            <View style={styles.scanBoxContainer}>
-              <View
-                style={styles.scanBox}
-              ></View>
-            </View>
-          </CameraView>
-          <View style={{ marginTop: 20 }}>
-            <Button title="Scan" onPress={() => setScanned(false)} />
+      {hasCameraPermission ? (
+        <CameraView
+          style={{ height: 450, width: 350 }}
+          barcodeScannerSettings={{ barcodeTypes: ["qr"] }}
+          onBarcodeScanned={handleBarCodeScanned}
+        >
+          <View style={styles.scanBoxContainer}>
+            <SCANNING width={300} height={300} />
           </View>
-          <View style={{ marginTop: 20 }}>
-            <Button
-              title="Close Camera"
-              onPress={() => setIsCameraOpen(false)}
-            />
-          </View>
-        </>
+        </CameraView>
+      ) : (
+        <Text>Please Enable Camera Permission</Text>
       )}
     </View>
   );
@@ -58,6 +42,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
+    alignItems: "center",
+    gap: 20,
   },
   scanBoxContainer: {
     position: "absolute",
@@ -66,13 +52,6 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
     zIndex: 0,
-  },
-  scanBox: {
-    borderStyle: "dashed",
-    borderWidth: 1,
-    borderColor: "white",
-    width: 200,
-    height: 200,
   },
 });
 
