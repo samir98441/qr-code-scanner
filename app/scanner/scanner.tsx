@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Alert, StyleSheet, Text, View } from "react-native";
 import { CameraView } from "expo-camera/next";
 import { Camera } from "expo-camera";
 import { SCANNING } from "../../assets";
 
 const Scanner = () => {
   const [hasCameraPermission, setHasCameraPermission] = useState(false);
+  const [scanMore, setScanMore] = useState(true);
+
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
@@ -14,7 +16,13 @@ const Scanner = () => {
   }, []);
 
   const handleBarCodeScanned = (res: any) => {
-    alert(res.data);
+    setScanMore(false);
+    Alert.alert("Scanned Details", res.data, [
+      {
+        text: "Scan More",
+        onPress: () => setScanMore(true),
+      },
+    ]);
   };
 
   return (
@@ -25,7 +33,7 @@ const Scanner = () => {
         <CameraView
           style={{ height: 450, width: 350 }}
           barcodeScannerSettings={{ barcodeTypes: ["qr"] }}
-          onBarcodeScanned={handleBarCodeScanned}
+          onBarcodeScanned={scanMore ? handleBarCodeScanned : undefined}
         >
           <View style={styles.scanBoxContainer}>
             <SCANNING width={300} height={300} />
