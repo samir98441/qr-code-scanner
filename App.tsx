@@ -7,7 +7,7 @@ export default function App() {
   return (
     <>
       <StatusBar style="dark" backgroundColor="#ffffff" />
-      <SafeAreaView style={{ ...styles.container, marginTop: 25 }}>
+      <SafeAreaView style={{ ...styles.container }}>
         <Scanner />
         {/* <ABC /> */}
       </SafeAreaView>
