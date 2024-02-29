@@ -3,13 +3,16 @@ import { Alert, Dimensions, StyleSheet, Text, View } from "react-native";
 import { CameraView } from "expo-camera/next";
 import { Camera } from "expo-camera";
 import { SCANNING } from "../../assets";
+// import { View } from "../../common/components";
 // x=146.13333129882812
 // y=93.5111083984375
 
 const Scanner = () => {
   const [hasCameraPermission, setHasCameraPermission] = useState(false);
   const [scanMore, setScanMore] = useState(true);
-  const [windowWidth, setWindowWidth] = useState<number>();
+  const [windowWidth, setWindowWidth] = useState<number>(0);
+  const asideWidth = Number(`${(windowWidth * 23) / 100}`);
+  const centerWidth = Number(`${(windowWidth * 54) / 100}`);
 
   useEffect(() => {
     setWindowWidth(Dimensions.get("window").width);
@@ -20,11 +23,12 @@ const Scanner = () => {
   }, []);
 
   const handleBarCodeScanned = (res: any) => {
+    console.log("AAAAAAAAAAAA", res);
     if (
-      res.boundingBox.origin.x >= 110 &&
-      res.boundingBox.origin.x <= 180 &&
-      res.boundingBox.origin.y >= 105 &&
-      res.boundingBox.origin.y <= 170
+      res.boundingBox.origin.y >= asideWidth + 60 &&
+      res.boundingBox.origin.y <= asideWidth + 120 &&
+      res.boundingBox.origin.x >= 150 &&
+      res.boundingBox.origin.x <= 230
     ) {
       setScanMore(false);
       Alert.alert("Scanned Details", res.data, [
@@ -40,25 +44,99 @@ const Scanner = () => {
     <View style={styles.container}>
       {hasCameraPermission ? (
         <CameraView
-          style={{ height: "100%", width: windowWidth }}
+          style={{
+            height: "100%",
+            width: windowWidth,
+          }}
           barcodeScannerSettings={{ barcodeTypes: ["qr"] }}
           onBarcodeScanned={scanMore ? handleBarCodeScanned : undefined}
         >
           <View
             style={{
-              ...styles.scanBoxContainer,
-              top: -200,
-              left: 10,
+              height: 150,
+              backgroundColor: "rgba(0,0,0,0.6)",
             }}
-          >
-            <SCANNING width={250} height={250} backgroundColor="red" />
+          />
+
+          <View style={{ display: "flex", flexDirection: "row", height: 200 }}>
+            <View
+              style={{
+                backgroundColor: "rgba(0,0,0,0.6)",
+                width: Number(asideWidth),
+                height: "100%",
+              }}
+            />
+            <View
+              style={{
+                width: Number(centerWidth),
+                display: "flex",
+                flexDirection: "row",
+              }}
+            >
+              <View
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderTopWidth: 4,
+                  borderLeftWidth: 4,
+                  borderColor: "white",
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                }}
+              />
+              <View
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderTopWidth: 4,
+                  borderRightWidth: 4,
+                  borderColor: "white",
+                  position: "absolute",
+                  top: 0,
+                  right: 0,
+                }}
+              />
+              <View
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderBottomWidth: 4,
+                  borderLeftWidth: 4,
+                  borderColor: "white",
+                  position: "absolute",
+                  bottom: 0,
+                  left: 0,
+                }}
+              />
+              <View
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderBottomWidth: 4,
+                  borderRightWidth: 4,
+                  borderColor: "white",
+                  position: "absolute",
+                  bottom: 0,
+                  right: 0,
+                }}
+              />
+            </View>
+            <View
+              style={{
+                backgroundColor: "rgba(0,0,0,0.6)",
+                width: Number(asideWidth),
+                height: "100%",
+              }}
+            />
           </View>
+
           <View
             style={{
-              position: "absolute",
-              zIndex: 999,
-              top: "50%",
-              left: "31%",
+              backgroundColor: "rgba(0,0,0,0.6)",
+              height: "100%",
+              alignItems: "center",
+              paddingTop: 60,
             }}
           >
             <Text
@@ -84,14 +162,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     gap: 20,
-  },
-  scanBoxContainer: {
-    // position: "absolute",
-    alignItems: "center",
-    justifyContent: "center",
-    height: "100%",
-    width: "100%",
-    zIndex: 0,
   },
 });
 
